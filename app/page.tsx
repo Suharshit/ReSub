@@ -1,3 +1,4 @@
+import { stripeConfigured } from "@/lib/env";
 import { FOUNDING_CAP, foundingSpotsTaken } from "@/lib/founding";
 import { SignupForm } from "./signup-form";
 
@@ -14,7 +15,8 @@ async function spotsLeft(): Promise<number | null> {
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ cancelled?: string }> }) {
   const [left, params] = await Promise.all([spotsLeft(), searchParams]);
-  const foundingOpen = left === null || left > 0;
+  const foundingLive = stripeConfigured();
+  const foundingOpen = foundingLive && (left === null || left > 0);
 
   return (
     <main>
@@ -78,7 +80,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
             <p className="price">Free</p>
             <p>Tell us how many subscribers pay with PayPal and where you&apos;re moving.</p>
           </div>
-          <div className={`tier ${foundingOpen ? "featured" : "soldout"}`}>
+          <div className={`tier ${foundingOpen || !foundingLive ? "featured" : "soldout"}`}>
             <h3>Founding spot</h3>
             <p className="price">
               $49 <span>one-time</span>
@@ -87,8 +89,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
               Save a card now. Charged only once ReSub is live for your store (from Dec 2). First {FOUNDING_CAP} stores,
               then $99.
             </p>
-            {left !== null && (
-              <p className="spots">{foundingOpen ? `${left} of ${FOUNDING_CAP} spots left` : "All founding spots taken"}</p>
+            {!foundingLive ? (
+              <p className="spots">Opens in a day or two. Join the waitlist to get first pick.</p>
+            ) : (
+              left !== null && (
+                <p className="spots">{foundingOpen ? `${left} of ${FOUNDING_CAP} spots left` : "All founding spots taken"}</p>
+              )
             )}
           </div>
         </div>

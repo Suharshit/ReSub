@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
-import { env } from "@/lib/env";
+import { after, NextResponse } from "next/server";
+import { env, stripeConfigured } from "@/lib/env";
 import { FOUNDING_CAP, FOUNDING_PURPOSE, foundingSpotsTaken } from "@/lib/founding";
+import { notifyOwner } from "@/lib/notify";
 import { parseSignup, type SignupResult } from "@/lib/signup";
 import { stripe } from "@/lib/stripe";
 import { db } from "@/lib/supabase";
@@ -39,7 +40,15 @@ export async function POST(request: Request) {
     );
     if (error) throw error;
 
-    if (input.intent === "waitlist") return reply({ ok: true, next: "thanks" });
+    after(() =>
+      notifyOwner(
+        `ReSub signup: ${input.paypalSubCount} PayPal subs (${input.intent})`,
+        `Email: ${input.email}\nPayPal subscribers: ${input.paypalSubCount}\nMoving to: ${input.destination}\nIntent: ${input.intent}`,
+      ),
+    );
+
+    // Until Stripe is set up, a founding request is kept as a waitlist entry (wants_founding = true).
+    if (input.intent === "waitlist" || !stripeConfigured()) return reply({ ok: true, next: "thanks" });
 
     if ((await foundingSpotsTaken()) >= FOUNDING_CAP) return reply({ ok: true, next: "full" });
 

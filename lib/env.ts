@@ -12,3 +12,8 @@ export const env = {
   stripeWebhookSecret: () => required("STRIPE_WEBHOOK_SECRET"),
   contactEmail: () => process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "",
 };
+
+/** Founding spots stay hidden until Stripe (connected to TrustMRR) is set up. */
+export function stripeConfigured(): boolean {
+  return Boolean(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_WEBHOOK_SECRET);
+}

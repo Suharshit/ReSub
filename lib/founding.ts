@@ -1,5 +1,6 @@
 // Server-only: founding-spot cap and recording saved cards. Nothing here charges a card.
 import type Stripe from "stripe";
+import { notifyOwner } from "./notify";
 import { db } from "./supabase";
 import { stripe } from "./stripe";
 
@@ -45,7 +46,7 @@ export async function recordReservation(session: Stripe.Checkout.Session): Promi
 
   const email = (session.metadata?.email ?? session.customer_details?.email ?? "").toLowerCase();
 
-  const { error } = await db().from("founding_reservations").upsert(
+  const { data: inserted, error } = await db().from("founding_reservations").upsert(
     {
       email,
       stripe_customer_id: customerId,
@@ -55,7 +56,12 @@ export async function recordReservation(session: Stripe.Checkout.Session): Promi
       status: "saved",
     },
     { onConflict: "stripe_setup_intent_id", ignoreDuplicates: true },
-  );
+  ).select("id");
   if (error) throw error;
+
+  // Empty when the row already existed (webhook retry, or thank-you page reload).
+  if (inserted && inserted.length > 0) {
+    await notifyOwner(`ReSub founding spot reserved: ${email}`, `Card saved (not charged) for ${email}.`);
+  }
   return true;
 }
