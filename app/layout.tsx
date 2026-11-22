@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Logo } from "./icons";
 import { HackathonTracker } from "./tracker";
 import "./globals.css";
+
+const sans = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 const title = "ReSub: keep your PayPal subscribers when Lemon Squeezy shuts down";
 const description =
@@ -16,17 +21,35 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
         <HackathonTracker />
-        <header className="topbar">
-          <a href="/" className="brand">
-            ReSub
-          </a>
+        <div className="bg-glow" aria-hidden="true" />
+        <header className="nav">
+          <div className="nav-inner">
+            <a href="/" className="brand" aria-label="ReSub home">
+              <Logo />
+              <span>ReSub</span>
+            </a>
+            <nav className="nav-links" aria-label="Main">
+              <a href="/#how">How it works</a>
+              <a href="/#pricing">Pricing</a>
+              <a href="/#faq">FAQ</a>
+            </nav>
+            <a href="/#join" className="btn primary sm">
+              Reserve a spot
+            </a>
+          </div>
         </header>
         {children}
         <footer className="footer">
-          <p>ReSub is an independent tool. Not affiliated with Lemon Squeezy or Stripe.</p>
+          <div className="footer-inner">
+            <a href="/" className="brand" aria-label="ReSub home">
+              <Logo />
+              <span>ReSub</span>
+            </a>
+            <p>ReSub is an independent tool. Not affiliated with Lemon Squeezy or Stripe.</p>
+          </div>
         </footer>
       </body>
     </html>

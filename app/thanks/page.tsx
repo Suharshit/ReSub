@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { env } from "@/lib/env";
 import { recordReservation } from "@/lib/founding";
 import { stripe } from "@/lib/stripe";
+import { IconCheck } from "../icons";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Thanks | ReSub", robots: { index: false } };
@@ -27,6 +28,12 @@ export default async function Thanks({ searchParams }: { searchParams: Promise<P
 
   return (
     <main className="thanks">
+      <div className="thanks-card">
+      {!(type === "reserved" && !reserved) && (
+        <span className="ico-box ok lg">
+          <IconCheck />
+        </span>
+      )}
       {reserved ? (
         <>
           <h1>Your founding spot is reserved.</h1>
@@ -66,15 +73,16 @@ export default async function Thanks({ searchParams }: { searchParams: Promise<P
           )}
         </>
       )}
+      </div>
 
       {contact && (
         <p className="contact">
           Questions? <a href={`mailto:${contact}`}>{contact}</a>
         </p>
       )}
-      <p>
-        <a href="/">← Back to ReSub</a>
-      </p>
+      <a href="/" className="back">
+        ← Back to ReSub
+      </a>
     </main>
   );
 }

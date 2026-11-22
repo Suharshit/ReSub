@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { DESTINATIONS, type Intent, type SignupResult } from "@/lib/signup";
+import { IconLock } from "./icons";
 
 export function SignupForm({ foundingOpen }: { foundingOpen: boolean }) {
   const [pending, setPending] = useState<Intent | null>(null);
@@ -44,7 +45,7 @@ export function SignupForm({ foundingOpen }: { foundingOpen: boolean }) {
 
   return (
     <form className="form" onSubmit={onSubmit}>
-      <label>
+      <label className="full">
         <span>Email</span>
         <input name="email" type="email" required autoComplete="email" placeholder="you@yourapp.com" />
       </label>
@@ -96,6 +97,7 @@ export function SignupForm({ foundingOpen }: { foundingOpen: boolean }) {
 
       {foundingOpen && (
         <p className="fineprint">
+          <IconLock className="ico-sm" />
           You won&apos;t be charged until ReSub is live for your store (from Dec 2). Remove your card any time
           before that. Card details go only to Stripe&apos;s secure checkout.
         </p>
