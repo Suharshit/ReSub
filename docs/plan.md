@@ -40,4 +40,10 @@ Otherwise stop. No build without that signal.
 
 | Date | Item | Amount (USD) |
 | --- | --- | --- |
-| | Domain | |
+| Nov 23 (planned) | Domain tryresub.com | |
+| (if upgraded) | Vercel Pro (Hobby is non-commercial) | 20/mo |
+
+## Decisions
+
+- Nov 22: domain will be **tryresub.com** (unregistered, no Wayback history on Nov 22). resub.com and similar are taken; getresub.com has 2024 history.
+- Nov 22: Supabase project `resub` created (free tier, us-east-1). Launch steps left for Suharshit: `docs/launch-checklist.md`.

@@ -7,6 +7,7 @@ Built for the Ship or Die $100K Hackathon (Nov 16 to Dec 16, 2026).
 - Project context for Claude Code: `CLAUDE.md`
 - Current phase and plan: `docs/plan.md`
 - First build (waitlist page): `docs/waitlist-spec.md`
+- Launch steps left to do: `docs/launch-checklist.md`
 - How it works: `docs/architecture.md`
 - Product and offer: `docs/brief.md`
 
