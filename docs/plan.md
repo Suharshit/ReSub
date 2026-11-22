@@ -46,4 +46,5 @@ Otherwise stop. No build without that signal.
 ## Decisions
 
 - Nov 22: domain will be **tryresub.com** (unregistered, no Wayback history on Nov 22). resub.com and similar are taken; getresub.com has 2024 history.
+- Nov 22: hosting stays on Vercel Hobby (free) during validation. If the Nov 24 go signal comes, upgrade to Pro ($20/mo) or move to AWS Amplify (credits) before the first charge on Dec 2. Only spend on Nov 23: the domain.
 - Nov 22: Supabase project `resub` created (free tier, us-east-1). Launch steps left for Suharshit: `docs/launch-checklist.md`.
